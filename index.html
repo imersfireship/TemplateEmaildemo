@@ -3877,7 +3877,7 @@
     };
 
     // --- LOGIKA BARU: SYSTEM SETTINGS (KONTROL PANEL) ---
-    window.renderSystemSettings = () => {
+window.renderSystemSettings = () => {
     try {
         const config = window.appState.systemSettings || {};
         
@@ -3903,7 +3903,8 @@
             'SMTP_PASS': config.SMTP_PASS || '',
             'sysQrisUrl': config.QRIS_IMAGE_URL || '',
             'sysAfterBtnText': config.AFTER_CHECKOUT_BTN_TEXT || '',
-            'sysAfterBtnUrl': config.AFTER_CHECKOUT_BTN_URL || ''
+            'sysAfterBtnUrl': config.AFTER_CHECKOUT_BTN_URL || '',
+            'sysEmailTheme': config.EMAIL_THEME || 'THEME_FIRESHIP'
         };
 
         for (const [id, value] of Object.entries(elements)) {
@@ -3922,6 +3923,7 @@
         console.error("Gagal render System Settings:", error);
     }
 };
+    
     // --- FUNGSI UNTUK MUNCULIN FORM SESUAI PILIHAN ---
 window.toggleEmailForms = () => {
     const providerSelect = document.getElementById('sysEmailProvider');
