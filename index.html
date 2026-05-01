@@ -4085,6 +4085,40 @@ window.testEmailConfig = async () => {
             });
         }, 100);
     };
+
+    // 1. Fungsi buat buka modal & panggil Preview
+async function showLiveEmailPreview() {
+    // Ambil tema yang dipilih di dropdown
+    const theme = document.getElementById('sysEmailTheme').value;
+    const modal = document.getElementById('modalPreviewEmail');
+    const iframe = document.getElementById('emailPreviewFrame');
+    
+    // Tampilkan modalnya
+    modal.classList.remove('hidden');
+    
+    // Kasih teks loading biar kustomer/lo tau lagi proses
+    iframe.srcdoc = '<div style="display:flex; height:100%; align-items:center; justify-content:center; font-family:sans-serif; color:#666;">Memuat Desain...</div>';
+    
+    try {
+        // Panggil fungsi preview di code.gs yang udah kita buat tadi
+        const res = await apiCall('previewEmailTemplate', { theme: theme });
+        
+        if (res.success) {
+            // Masukin HTML desain dari template.gs ke iframe
+            iframe.srcdoc = res.html;
+        } else {
+            iframe.srcdoc = '<div style="padding:20px; color:red; font-family:sans-serif;">Gagal memuat preview.</div>';
+        }
+    } catch (e) {
+        console.error("Error Preview:", e);
+        iframe.srcdoc = '<div style="padding:20px; color:red; font-family:sans-serif;">Error sistem.</div>';
+    }
+}
+
+// 2. Fungsi buat nutup modal (dipanggil tombol X di HTML tadi)
+function closeEmailPreview() {
+    document.getElementById('modalPreviewEmail').classList.add('hidden');
+}
     
 </script>
 </body>
