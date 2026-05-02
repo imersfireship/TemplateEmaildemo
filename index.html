@@ -931,18 +931,11 @@
                 <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">Pilih Provider Email</label>
                 <select id="sysEmailProvider" onchange="window.toggleEmailForms()" class="w-full px-4 py-3 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand outline-none transition-all dark:text-white">
                     <option value="NONE">-- Tidak Ada Sinkronisasi --</option>
-                    <option value="KIRIMEMAIL">Kirim.Email API</option>
                     <option value="MAILKETING">Mailketing API</option>
                     <option value="JOWMAIL">Jowmail API</option>
                 </select>
             </div>
-
-            <div id="form-KIRIMEMAIL" class="email-config-form hidden space-y-4">
-                <input type="text" id="KIRIMEMAIL_AUTH_ID" placeholder="Username Kirim.Email" class="w-full px-4 py-3 border rounded-xl font-bold">
-                <input type="text" id="KIRIMEMAIL_AUTH_TOKEN" placeholder="REST API Token" class="w-full px-4 py-3 border rounded-xl font-bold">
-                <input type="text" id="KIRIMEMAIL_LIST_ID" placeholder="List ID" class="w-full px-4 py-3 border rounded-xl font-bold">
-                <input type="text" id="KIRIMEMAIL_SENDER" placeholder="Email Pengirim Verified" class="w-full px-4 py-3 border border-brand/50 rounded-xl font-bold">
-            </div>
+          
 
             <div id="form-MAILKETING" class="email-config-form hidden space-y-4">
                 <input type="text" id="MAILKETING_TOKEN" placeholder="Mailketing API Token" class="w-full px-4 py-3 border rounded-xl font-bold">
@@ -3893,10 +3886,6 @@ window.renderSystemSettings = () => {
             'MAILKETING_FROM_NAME': config.MAILKETING_FROM_NAME || '',
             'JOWMAIL_TOKEN': config.JOWMAIL_TOKEN || '',
             'JOWMAIL_LIST_ID': config.JOWMAIL_LIST_ID || '',
-            'KIRIMEMAIL_AUTH_ID': config.KIRIMEMAIL_AUTH_ID || '',
-            'KIRIMEMAIL_AUTH_TOKEN': config.KIRIMEMAIL_AUTH_TOKEN || '',
-            'KIRIMEMAIL_LIST_ID': config.KIRIMEMAIL_LIST_ID || '',
-            'KIRIMEMAIL_SENDER': config.KIRIMEMAIL_SENDER || '',
             'SMTP_HOST': config.SMTP_HOST || '',
             'SMTP_PORT': config.SMTP_PORT || '',
             'SMTP_USER': config.SMTP_USER || '',
@@ -3959,17 +3948,12 @@ window.toggleEmailForms = () => {
             emailProvider: provider,
             MAILKETING_STATUS: provider === 'MAILKETING' ? 'ON' : 'OFF',
             JOWMAIL_STATUS: provider === 'JOWMAIL' ? 'ON' : 'OFF',
-            KIRIMEMAIL_STATUS: provider === 'KIRIMEMAIL' ? 'ON' : 'OFF',
             SMTP_STATUS: provider === 'SMTP' ? 'ON' : 'OFF',
             MAILKETING_TOKEN: document.getElementById('MAILKETING_TOKEN')?.value || '',
             MAILKETING_FROM_EMAIL: document.getElementById('MAILKETING_FROM_EMAIL')?.value || '',
             MAILKETING_FROM_NAME: document.getElementById('MAILKETING_FROM_NAME')?.value || '',
             JOWMAIL_TOKEN: document.getElementById('JOWMAIL_TOKEN')?.value || '',
             JOWMAIL_LIST_ID: document.getElementById('JOWMAIL_LIST_ID')?.value || '',
-            KIRIMEMAIL_AUTH_ID: document.getElementById('KIRIMEMAIL_AUTH_ID')?.value || '',
-            KIRIMEMAIL_AUTH_TOKEN: document.getElementById('KIRIMEMAIL_AUTH_TOKEN')?.value || '',
-            KIRIMEMAIL_LIST_ID: document.getElementById('KIRIMEMAIL_LIST_ID')?.value || '',
-            KIRIMEMAIL_SENDER: document.getElementById('KIRIMEMAIL_SENDER')?.value || '',
             SMTP_HOST: document.getElementById('SMTP_HOST')?.value || '',
             SMTP_PORT: document.getElementById('SMTP_PORT')?.value || '',
             SMTP_USER: document.getElementById('SMTP_USER')?.value || '',
@@ -3998,8 +3982,7 @@ window.toggleEmailForms = () => {
         if(src){ if(l){l.src=src;l.classList.remove('hidden');} } else { if(l){l.src='';l.classList.add('hidden');} } 
     };
 
-    // --- FUNGSI TES EMAIL GLOBAL ---
-window.testEmailConfig = async () => {
+   window.testEmailConfig = async () => {
     const provider = document.getElementById('sysEmailProvider').value;
     
     if (provider === 'NONE') {
@@ -4009,31 +3992,21 @@ window.testEmailConfig = async () => {
     const targetEmail = prompt("Kirim email tes ke mana?");
     if (!targetEmail) return;
 
-    window.showToast("Sedang mengetes " + provider + "...");
+    window.showToast("Sedang mengetes " + provider + "...", "info");
 
-    // PAYLOAD LENGKAP: Mailketing, Jowmail & Kirim.Email
+    // PAYLOAD YANG SUDAH BERSIH (Tanpa Kirim.Email)
     const payload = {
         action: 'testThirdParty',
         provider: provider.toLowerCase(),
         test_email: targetEmail,
         
-        // Logika ambil Token & ID secara dinamis
-        token: (provider === 'KIRIMEMAIL') 
-            ? document.getElementById('KIRIMEMAIL_AUTH_TOKEN')?.value 
-            : document.getElementById(provider + '_TOKEN')?.value || "",
-               
-        auth_id: document.getElementById('KIRIMEMAIL_AUTH_ID')?.value || "",
-        
-        list_id: (provider === 'KIRIMEMAIL')
-            ? document.getElementById('KIRIMEMAIL_LIST_ID')?.value
-            : document.getElementById(provider + '_LIST_ID')?.value || "",
+        // Mengambil token/ID secara dinamis berdasarkan provider (Mailketing/Jowmail/SMTP)
+        token: document.getElementById(provider + '_TOKEN')?.value || "",
+        list_id: document.getElementById(provider + '_LIST_ID')?.value || "",
         
         // Data Khusus Mailketing
         from_email: document.getElementById('MAILKETING_FROM_EMAIL')?.value || "",
         from_name: document.getElementById('MAILKETING_FROM_NAME')?.value || "Admin",
-        
-        // Data Khusus Kirim.Email
-        sender_email: document.getElementById('KIRIMEMAIL_SENDER')?.value || "",
         
         // Data Khusus SMTP
         host: document.getElementById('SMTP_HOST')?.value || "",
@@ -4053,7 +4026,6 @@ window.testEmailConfig = async () => {
         window.showToast("Koneksi gagal: " + err.message, "error");
     }
 };
-
     window.initChart = () => {
         setTimeout(() => {
             const canvas = document.getElementById('salesChart');
