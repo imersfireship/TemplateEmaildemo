@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
@@ -933,6 +933,7 @@
                     <option value="NONE">-- Tidak Ada Sinkronisasi --</option>
                     <option value="MAILKETING">Mailketing API</option>
                     <option value="JOWMAIL">Jowmail API</option>
+                    <option value="SMTP">SMTP Hosting</option>
                 </select>
             </div>
           
@@ -947,6 +948,15 @@
                 <input type="text" id="JOWMAIL_TOKEN" placeholder="Jowmail API Token" class="w-full px-4 py-3 border rounded-xl font-bold">
                 <input type="text" id="JOWMAIL_LIST_ID" placeholder="List ID Jowmail" class="w-full px-4 py-3 border rounded-xl font-bold">
             </div>
+
+            <div id="form-SMTP" class="email-config-form hidden space-y-4">
+                <input type="text" id="SMTP_HOST" placeholder="SMTP Host (contoh: smtp.gmail.com)" class="w-full px-4 py-3 border rounded-xl font-bold">
+                <input type="text" id="SMTP_PORT" placeholder="Port (contoh: 587)" class="w-full px-4 py-3 border rounded-xl font-bold">
+                <input type="text" id="SMTP_USER" placeholder="SMTP Username" class="w-full px-4 py-3 border rounded-xl font-bold">
+                <input type="password" id="SMTP_PASS" placeholder="SMTP Password" class="w-full px-4 py-3 border rounded-xl font-bold">
+            </div>
+
+          
 
             <div class="py-2">
                 <button type="button" onclick="window.testEmailConfig()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-200 rounded-xl text-xs font-bold border border-slate-200">
