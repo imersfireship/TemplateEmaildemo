@@ -3904,7 +3904,7 @@ window.renderSystemSettings = () => {
             'sysQrisUrl': config.QRIS_IMAGE_URL || '',
             'sysAfterBtnText': config.AFTER_CHECKOUT_BTN_TEXT || '',
             'sysAfterBtnUrl': config.AFTER_CHECKOUT_BTN_URL || '',
-            'sysEmailTheme': config.EMAIL_THEME || 'THEME_FIRESHIP'
+            
         };
 
         for (const [id, value] of Object.entries(elements)) {
@@ -3956,7 +3956,6 @@ window.toggleEmailForms = () => {
             KODE_UNIK_MAX: document.getElementById('sysUniqueMax')?.value,
             AFFILIATE_LOCK: document.getElementById('sysAffLock')?.value,
             AFFILIATE_COOKIE_DURATION: document.getElementById('sysCookieDays')?.value,
-            EMAIL_THEME: document.getElementById('sysEmailTheme')?.value || 'THEME_FIRESHIP',
             emailProvider: provider,
             MAILKETING_STATUS: provider === 'MAILKETING' ? 'ON' : 'OFF',
             JOWMAIL_STATUS: provider === 'JOWMAIL' ? 'ON' : 'OFF',
